@@ -25,7 +25,20 @@ SECRET_KEY = 'django-insecure-^5zv2&aef@n*hi0icmu7lji6bqf0r&d@!x)%*gq-e^w)2e^kl!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+
+LOGIN_REDIRECT_URL = '/accounts/user/login'
+LOGIN_URL = '/accounts/user/login'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+AUTH_USER_MODEL = 'user_management.User'
+
+STRIPE_PUBLIC_KEY = "pk_test_51PoseE050JE89jJG85ZUGTXvcXNgziBRdyCNzPydQ7ngbEAUCyOzF3Lvz7JkX8qePludxNIigvTMHwqotpRCrA4E00NJ7VgSfd"
+STRIPE_SECRET_KEY = "sk_test_51PoseE050JE89jJGUypP7IdYiTdb7bD1da6baheYVgmGSOqNbFUVR7KD04RWrq0WMTTtpI3vrxovwwA1PjCG5TLS00FkXZUgTc"
+STRIPE_WEBHOOK_SECRET = ""
 
 
 # Application definition
@@ -37,14 +50,29 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
+    'crispy_bootstrap4',
 
-    'equipment_management',
-    'user_management'
+    'rest_framework',
+    'rest_framework.authtoken',
+    'corsheaders',
+    'djoser',
+
+    'equipment_management.apps.EquipmentManagementConfig',
+    'user_management.apps.UserManagementConfig',
+
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+CORS_ALLOW_ALL_ORIGINS = True  # For development only
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -58,7 +86,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            BASE_DIR /"templates"
+            BASE_DIR /"templates",
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -120,9 +148,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [BASE_DIR / 'static']
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media/'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
